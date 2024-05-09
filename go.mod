@@ -2,7 +2,10 @@ module mock-server
 
 go 1.20
 
-require github.com/nacos-group/nacos-sdk-go v1.1.4
+require (
+	github.com/nacos-group/nacos-sdk-go v1.1.4
+	gopkg.in/yaml.v2 v2.2.2
+)
 
 require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.18 // indirect

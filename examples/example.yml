@@ -1,0 +1,42 @@
+nacos:
+  enabled: true  # 控制是否启用 Nacos 注册
+  server_addr: "192.168.2.128"
+  server_port: 31146
+  namespace_id: "public"
+
+
+server:
+   - name: billing-center
+     port: 8080
+     endpoints:
+       - url: /api/v1/user
+         method: GET
+         response: '{"name": "tom", "age": 18}'
+         status: 200
+         delay: 100
+         headers:
+           Content-Type: application/json
+       - url: /api/v1/hello
+         method: GET
+         response: Hello world!
+         status: 200
+         delay: 1000
+         headers:
+           Content-Type: html/text
+   - name: write-off-center
+     port: 8081
+     endpoints:
+       - url: /api/v2/user
+         method: GET
+         response: '{"name": "tom", "age": 18}'
+         status: 200
+         delay: 100
+         headers:
+           Content-Type: application/json
+       - url: /api/v2/hello
+         method: GET
+         response: Hello world!
+         status: 200
+         delay: 1000
+         headers:
+           Content-Type: html/text
