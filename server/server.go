@@ -40,7 +40,7 @@ func (s *Server) Run(server config.Server) error {
 
 func (s *Server) createNacosClient() (naming_client.INamingClient, error) {
 	sc := []constant.ServerConfig{
-		*constant.NewServerConfig(s.Config.Nacos.ServerAddr, uint64(s.Config.Nacos.ServerPort)),
+		*constant.NewServerConfig(s.Config.Nacos.ServerAddr, s.Config.Nacos.ServerPort),
 	}
 
 	cc := constant.ClientConfig{

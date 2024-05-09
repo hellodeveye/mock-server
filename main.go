@@ -15,19 +15,14 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to load configuration: %v", err)
 	}
-	if cfg.Nacos.Enabled {
-
-		for _, service := range cfg.Server {
-			go func(service config.Server) {
+	enabled := cfg.Nacos.Enabled
+	for _, service := range cfg.Server {
+		go func(service config.Server) {
+			if enabled {
 				if err := server.RegisterWithNacos(cfg.Nacos, service.Name, service.Port); err != nil {
 					log.Fatalf("Failed to register with Nacos: %s", err)
 				}
-			}(service)
-		}
-	}
-
-	for _, service := range cfg.Server {
-		go func(service config.Server) {
+			}
 			srv := server.New(cfg)
 			if err := srv.Run(service); err != nil {
 				log.Fatalf("Failed to run server: %v", err)
