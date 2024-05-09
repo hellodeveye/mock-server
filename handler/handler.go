@@ -18,7 +18,10 @@ func MakeHandler(ep config.Endpoint, method string) http.HandlerFunc {
 		for key, value := range ep.Headers {
 			w.Header().Set(key, value)
 		}
+		if ep.Status == 0 {
+			ep.Status = http.StatusOK
+		}
 		w.WriteHeader(ep.Status)
-		w.Write([]byte(ep.Response))
+		_, _ = w.Write([]byte(ep.Response))
 	}
 }
