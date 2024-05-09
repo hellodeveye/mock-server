@@ -1,10 +1,6 @@
 package server
 
 import (
-	"github.com/nacos-group/nacos-sdk-go/clients"
-	"github.com/nacos-group/nacos-sdk-go/clients/naming_client"
-	"github.com/nacos-group/nacos-sdk-go/common/constant"
-	"github.com/nacos-group/nacos-sdk-go/vo"
 	"mock-server/config"
 	"mock-server/handler"
 	"net/http"
@@ -35,24 +31,5 @@ func (s *Server) Run(server config.Server) error {
 		}
 	}
 
-	return http.ListenAndServe(":"+strconv.FormatUint(server.Port, 10), mux)
-}
-
-func (s *Server) createNacosClient() (naming_client.INamingClient, error) {
-	sc := []constant.ServerConfig{
-		*constant.NewServerConfig(s.Config.Nacos.ServerAddr, s.Config.Nacos.ServerPort),
-	}
-
-	cc := constant.ClientConfig{
-		NamespaceId:         s.Config.Nacos.NamespaceId,
-		TimeoutMs:           5000,
-		NotLoadCacheAtStart: true,
-	}
-
-	return clients.NewNamingClient(
-		vo.NacosClientParam{
-			ClientConfig:  &cc,
-			ServerConfigs: sc,
-		},
-	)
+	return http.ListenAndServe(":"+strconv.FormatUint(server.Port, 10), LoggingMiddleware(mux))
 }

@@ -5,18 +5,19 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"
+	"log"
 	"mock-server/config"
 	"net"
 )
 
-func RegisterWithNacos(nacosConfig config.NacosConfig, serviceName string, port uint64) error {
+func RegisterWithNacos(c config.NacosConfig, serviceName string, port uint64) error {
 	clientConfig := constant.ClientConfig{
-		NamespaceId: nacosConfig.NamespaceId,
+		NamespaceId: c.NamespaceId,
 	}
 	serverConfig := []constant.ServerConfig{
 		{
-			IpAddr: nacosConfig.ServerAddr,
-			Port:   nacosConfig.ServerPort,
+			IpAddr: c.ServerAddr,
+			Port:   c.ServerPort,
 		},
 	}
 
@@ -36,7 +37,7 @@ func RegisterWithNacos(nacosConfig config.NacosConfig, serviceName string, port 
 	}
 
 	// 注册服务
-	_, err = namingClient.RegisterInstance(vo.RegisterInstanceParam{
+	b, err := namingClient.RegisterInstance(vo.RegisterInstanceParam{
 		Ip:          ip,
 		Port:        port,
 		ServiceName: serviceName,
@@ -48,16 +49,23 @@ func RegisterWithNacos(nacosConfig config.NacosConfig, serviceName string, port 
 			"env": "mock-server",
 		},
 	})
+	if err != nil {
+		return err
+	}
+	if b {
+		log.Printf("Successfully registered service %s with Nacos.\n", serviceName)
+	}
+
 	return err
 }
 
 // GetLocalIP 返回本机的非环回 IPv4 地址
 func GetLocalIP() (string, error) {
-	addrs, err := net.InterfaceAddrs()
+	addresses, err := net.InterfaceAddrs()
 	if err != nil {
 		return "", err
 	}
-	for _, addr := range addrs {
+	for _, addr := range addresses {
 		// 检查网络地址是否是 IP 地址
 		ipNet, ok := addr.(*net.IPNet)
 		if ok && !ipNet.IP.IsLoopback() {
