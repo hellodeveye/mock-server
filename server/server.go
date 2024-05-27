@@ -19,6 +19,9 @@ func (s *Server) Run(server config.Server) error {
 
 	mux := http.NewServeMux()
 	for _, ep := range server.Endpoints {
+		if !ep.Enabled {
+			continue
+		}
 		switch ep.Method {
 		case "GET":
 			mux.HandleFunc(ep.URL, handler.MakeHandler(ep, http.MethodGet))

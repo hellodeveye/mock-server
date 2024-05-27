@@ -1,8 +1,9 @@
 package config
 
 import (
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
+
+	"gopkg.in/yaml.v2"
 )
 
 type Server struct {
@@ -17,14 +18,15 @@ type Endpoint struct {
 	Response string            `yaml:"response"`
 	Status   int               `yaml:"status"`
 	Delay    int               `yaml:"delay"`
+	Enabled  bool              `yaml:"enabled"`
 	Headers  map[string]string `yaml:"headers"`
 }
 
 type NacosConfig struct {
 	Enabled     bool   `yaml:"enabled"`
-	ServerAddr  string `yaml:"server_addr"`
-	ServerPort  uint64 `yaml:"server_port"`
-	NamespaceId string `yaml:"namespace_id"`
+	ServerAddr  string `yaml:"server-addr"`
+	ServerPort  uint64 `yaml:"server-port"`
+	NamespaceId string `yaml:"namespace-id"`
 }
 
 type Config struct {

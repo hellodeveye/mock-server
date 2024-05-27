@@ -1,8 +1,8 @@
 nacos:
   enabled: true  # 控制是否启用 Nacos 注册
-  server_addr: "192.168.2.128"
-  server_port: 31146
-  namespace_id: "public"
+  server-addr: "192.168.2.128"
+  server-port: 31146
+  namespace-id: "public"
 
 
 server:
