@@ -7,7 +7,7 @@ nacos:
 
 server:
    - name: billing-center
-     port: 8080
+     #port: 8080
      endpoints:
        - url: /api/v1/user
          method: GET

@@ -1,14 +1,16 @@
 package config
 
 import (
-	"io/ioutil"
+	"errors"
+	"mock-server/net"
+	"os"
 
 	"gopkg.in/yaml.v2"
 )
 
 type Server struct {
 	Name      string     `yaml:"name"`
-	Port      uint64     `yaml:"port"`
+	Port      int        `yaml:"port"`
 	Endpoints []Endpoint `yaml:"endpoints"`
 }
 
@@ -25,7 +27,7 @@ type Endpoint struct {
 type NacosConfig struct {
 	Enabled     bool   `yaml:"enabled"`
 	ServerAddr  string `yaml:"server-addr"`
-	ServerPort  uint64 `yaml:"server-port"`
+	ServerPort  int64  `yaml:"server-port"`
 	NamespaceId string `yaml:"namespace-id"`
 }
 
@@ -35,7 +37,7 @@ type Config struct {
 }
 
 func LoadConfig(path string) (*Config, error) {
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
@@ -46,4 +48,17 @@ func LoadConfig(path string) (*Config, error) {
 	}
 
 	return &cfg, nil
+}
+
+func (c *Config) InitConfig() error {
+	for _, server := range c.Server {
+		if server.Port == 0 {
+			port, err := net.GetFreePort()
+			if err != nil {
+				return errors.New("failed to get free port")
+			}
+			server.Port = port
+		}
+	}
+	return nil
 }

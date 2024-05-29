@@ -15,6 +15,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to load configuration: %v", err)
 	}
+	err = cfg.InitConfig()
+	if err != nil {
+		log.Fatalf("Failed to init configuration: %v", err)
+	}
 	enabled := cfg.Nacos.Enabled
 	for _, service := range cfg.Server {
 		go func(service config.Server) {

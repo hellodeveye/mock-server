@@ -10,14 +10,14 @@ import (
 	"net"
 )
 
-func RegisterWithNacos(c config.NacosConfig, serviceName string, port uint64) error {
+func RegisterWithNacos(c config.NacosConfig, serviceName string, port int) error {
 	clientConfig := constant.ClientConfig{
 		NamespaceId: c.NamespaceId,
 	}
 	serverConfig := []constant.ServerConfig{
 		{
 			IpAddr: c.ServerAddr,
-			Port:   c.ServerPort,
+			Port:   uint64(c.ServerPort),
 		},
 	}
 
@@ -39,7 +39,7 @@ func RegisterWithNacos(c config.NacosConfig, serviceName string, port uint64) er
 	// 注册服务
 	b, err := namingClient.RegisterInstance(vo.RegisterInstanceParam{
 		Ip:          ip,
-		Port:        port,
+		Port:        uint64(port),
 		ServiceName: serviceName,
 		Weight:      1,
 		Enable:      true,
