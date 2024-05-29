@@ -34,5 +34,5 @@ func (s *Server) Run(server config.Server) error {
 		}
 	}
 
-	return http.ListenAndServe(":"+strconv.FormatUint(server.Port, 10), LoggingMiddleware(mux))
+	return http.ListenAndServe(":"+strconv.FormatInt(int64(server.Port), 10), LoggingMiddleware(mux))
 }
