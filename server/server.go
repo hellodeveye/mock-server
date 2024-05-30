@@ -18,6 +18,7 @@ func New(cfg *config.Config) *Server {
 func (s *Server) Run(server config.Server) error {
 
 	mux := http.NewServeMux()
+	//ctx := context.WithValue(context.Background(), "server", server)
 	for _, ep := range server.Endpoints {
 		if !ep.Enabled {
 			continue
@@ -33,6 +34,5 @@ func (s *Server) Run(server config.Server) error {
 			mux.HandleFunc(ep.URL, handler.MakeHandler(ep, http.MethodDelete))
 		}
 	}
-
 	return http.ListenAndServe(":"+strconv.FormatInt(int64(server.Port), 10), LoggingMiddleware(mux))
 }

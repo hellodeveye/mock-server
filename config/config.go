@@ -32,7 +32,7 @@ type NacosConfig struct {
 }
 
 type Config struct {
-	Server []Server    `yaml:"server"`
+	Server []*Server   `yaml:"server"`
 	Nacos  NacosConfig `yaml:"nacos"`
 }
 
