@@ -31,7 +31,7 @@ func main() {
 			if err := srv.Run(service); err != nil {
 				log.Fatalf("Failed to run server: %v", err)
 			}
-		}(service)
+		}(*service)
 	}
 	select {}
 
