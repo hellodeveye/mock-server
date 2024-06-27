@@ -14,6 +14,7 @@ server:
      #port: 8080
      endpoints:
        - url: /api/v1/user
+         enabled: true
          method: GET
          response: '{"name": "tom", "age": 18}'
          status: 200
