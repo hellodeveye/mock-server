@@ -1,3 +1,7 @@
+router:
+  enabled: true  # 控制是否启用路由
+  gateway-addr: 'https://api-dev.znlh.work/'
+
 nacos:
   enabled: true  # 控制是否启用 Nacos 注册
   server-addr: "192.168.2.128"

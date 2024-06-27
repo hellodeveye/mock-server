@@ -31,9 +31,15 @@ type NacosConfig struct {
 	NamespaceId string `yaml:"namespace-id"`
 }
 
+type RouterConfig struct {
+	Enabled     bool   `yaml:"enabled"`
+	GatewayAddr string `yaml:"gateway-addr"`
+}
+
 type Config struct {
-	Server []*Server   `yaml:"server"`
-	Nacos  NacosConfig `yaml:"nacos"`
+	Server []*Server    `yaml:"server"`
+	Nacos  NacosConfig  `yaml:"nacos"`
+	Router RouterConfig `yaml:"router"`
 }
 
 func LoadConfig(path string) (*Config, error) {

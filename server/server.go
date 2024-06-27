@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"mock-server/config"
 	"mock-server/handler"
 	"net/http"
@@ -16,23 +17,23 @@ func New(cfg *config.Config) *Server {
 }
 
 func (s *Server) Run(server config.Server) error {
-
 	mux := http.NewServeMux()
-	//ctx := context.WithValue(context.Background(), "server", server)
+	ctx := context.WithValue(context.Background(), "router", s.Config.Router)
+	ctx = context.WithValue(ctx, "server", server)
 	for _, ep := range server.Endpoints {
 		if !ep.Enabled {
 			continue
 		}
 		switch ep.Method {
 		case "GET":
-			mux.HandleFunc(ep.URL, handler.MakeHandler(ep, http.MethodGet))
+			mux.HandleFunc(ep.URL, handler.MakeHandler(ep, server, http.MethodGet))
 		case "POST":
-			mux.HandleFunc(ep.URL, handler.MakeHandler(ep, http.MethodPost))
+			mux.HandleFunc(ep.URL, handler.MakeHandler(ep, server, http.MethodPost))
 		case "PUT":
-			mux.HandleFunc(ep.URL, handler.MakeHandler(ep, http.MethodPut))
+			mux.HandleFunc(ep.URL, handler.MakeHandler(ep, server, http.MethodPut))
 		case "DELETE":
-			mux.HandleFunc(ep.URL, handler.MakeHandler(ep, http.MethodDelete))
+			mux.HandleFunc(ep.URL, handler.MakeHandler(ep, server, http.MethodDelete))
 		}
 	}
-	return http.ListenAndServe(":"+strconv.FormatInt(int64(server.Port), 10), LoggingMiddleware(mux))
+	return http.ListenAndServe(":"+strconv.FormatInt(int64(server.Port), 10), LoggingMiddleware(NotFoundMiddleware(mux, ctx)))
 }
