@@ -44,10 +44,10 @@ server:
 ### ToDo
 
 - [x] Endpoint 支持启用enable开关
-- [ ] Mock 服务随机端口
-- [ ] 路由转发
-- [ ] 开启路由转发config
-- [ ] 支持转发都开发环境
+- [x] Mock 服务随机端口
+- [x] 路由转发
+- [x] 开启路由转发config
+- [x] 支持转发都特定环境
 - [ ] 配置文件沉淀
 - [ ] gitlab
 - [ ] suite
