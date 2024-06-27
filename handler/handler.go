@@ -1,13 +1,15 @@
 package handler
 
 import (
+	"context"
 	"mock-server/config"
 	"net/http"
 	"time"
 )
 
-func MakeHandler(ep config.Endpoint, method string) http.HandlerFunc {
+func MakeHandler(ep config.Endpoint, server config.Server, method string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		r.WithContext(context.WithValue(context.Background(), "server", server))
 		if r.Method != method {
 			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 			return
