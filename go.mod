@@ -3,6 +3,7 @@ module mock-server
 go 1.20
 
 require (
+	github.com/mcuadros/go-defaults v1.2.0
 	github.com/nacos-group/nacos-sdk-go v1.1.4
 	gopkg.in/yaml.v2 v2.2.2
 )

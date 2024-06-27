@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+	"github.com/mcuadros/go-defaults"
 	"mock-server/net"
 	"os"
 
@@ -9,9 +10,9 @@ import (
 )
 
 type Server struct {
-	Name      string     `yaml:"name"`
-	Port      int        `yaml:"port"`
-	Endpoints []Endpoint `yaml:"endpoints"`
+	Name      string      `yaml:"name"`
+	Port      int         `yaml:"port"`
+	Endpoints []*Endpoint `yaml:"endpoints"`
 }
 
 type Endpoint struct {
@@ -20,7 +21,7 @@ type Endpoint struct {
 	Response string            `yaml:"response"`
 	Status   int               `yaml:"status"`
 	Delay    int               `yaml:"delay"`
-	Enabled  bool              `yaml:"enabled"`
+	Enabled  bool              `yaml:"enabled" default:"true"`
 	Headers  map[string]string `yaml:"headers"`
 }
 
@@ -64,6 +65,10 @@ func (c *Config) InitConfig() error {
 				return errors.New("failed to get free port")
 			}
 			server.Port = port
+		}
+		// init default values
+		for _, ep := range server.Endpoints {
+			defaults.SetDefaults(ep)
 		}
 	}
 	return nil
